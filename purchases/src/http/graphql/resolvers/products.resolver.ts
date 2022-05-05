@@ -1,9 +1,9 @@
 import { UseGuards } from '@nestjs/common';
-import { Query } from '@nestjs/graphql';
+import { Args, Mutation, Query } from '@nestjs/graphql';
 import { Resolver } from '@nestjs/graphql';
-import { PrismaService } from '../../../database/prisma/prisma.service';
 import { ProductsService } from '../../../services/product.service';
 import { AuthorizationGuard } from '../../auth/authorization.guard';
+import { CreateProductInput } from '../inputs/create-product-input';
 import { Product } from '../models/product';
 
 @Resolver()
@@ -15,8 +15,13 @@ export class ProductsResolver {
    * [Product] - because it is graphql
    */
   @Query(() => [Product])
-  // @UseGuards(AuthorizationGuard)
   products() {
     return this.productsService.listAllProducts();
+  }
+
+  @UseGuards(AuthorizationGuard)
+  @Mutation(() => Product)
+  createProduct(@Args('data') data: CreateProductInput) {
+    return this.productsService.createProduct(data);
   }
 }
