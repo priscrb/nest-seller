@@ -1,0 +1,35 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
+
+import { getSession } from "@auth0/nextjs-auth0";
+import { GetServerSideProps } from "next";
+
+export default function Home() {
+  return null;
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = getSession(req, res);
+
+  /**
+   * If the session is false, it means the user is not logged in
+   */
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/api/auth/login",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: "/app",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
