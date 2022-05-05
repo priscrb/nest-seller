@@ -10,26 +10,17 @@ import jwt from 'express-jwt';
 import { expressJwtSecret } from 'jwks-rsa';
 import { promisify } from 'node:util';
 
-/**
- * Middleware
- * determina se o usuario prossegue com a requisicao ou nao
- */
-
 @Injectable()
 export class AuthorizationGuard implements CanActivate {
   private AUTH0_AUDIENCE: string;
   private AUTH0_DOMAIN: string;
+
   constructor(private configService: ConfigService) {
     this.AUTH0_AUDIENCE = this.configService.get('AUTH0_AUDIENCE') ?? '';
     this.AUTH0_DOMAIN = this.configService.get('AUTH0_DOMAIN') ?? '';
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // const httpCOntext = context.switchToHttp();
-    // const req = httpCOntext.getRequest();
-    // const res = httpCOntext.getResponse();
-
-    // For graphql config
     const { req, res } = GqlExecutionContext.create(context).getContext();
 
     const checkJWT = promisify(
@@ -38,7 +29,7 @@ export class AuthorizationGuard implements CanActivate {
           cache: true,
           rateLimit: true,
           jwksRequestsPerMinute: 5,
-          jwksUri: `${this.AUTH0_DOMAIN}/.well-known/jwks.json`,
+          jwksUri: `${this.AUTH0_DOMAIN}.well-known/jwks.json`,
         }),
         audience: this.AUTH0_AUDIENCE,
         issuer: this.AUTH0_DOMAIN,
@@ -48,9 +39,10 @@ export class AuthorizationGuard implements CanActivate {
 
     try {
       await checkJWT(req, res);
+
       return true;
     } catch (err) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(err);
     }
   }
 }

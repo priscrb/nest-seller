@@ -5,7 +5,7 @@ import { AuthorizationGuard } from './auth/authorization.guard';
 
 @Resolver()
 export class TestResolver {
-  // @UseGuards(AuthorizationGuard)
+  @UseGuards(AuthorizationGuard)
   @Query(() => String)
   hello() {
     return 'Hello World!';
