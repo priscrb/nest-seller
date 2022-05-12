@@ -1,4 +1,4 @@
-# Courses App
+# Courses Seller
 
 Built with
 
