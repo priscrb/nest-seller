@@ -6,3 +6,4 @@ Built with
 - React.js
 - GraphQL
 - Apache Kafka
+- Auth0
