@@ -1,6 +1,10 @@
 {
-  "name": "ignite-lab",
+  "name": "course-app",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "author": {
+    "name": "Priscilla Ribeiro",
+    "email": "priscillaribeirosa@gmail.com"
+  }
 }
