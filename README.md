@@ -7,3 +7,8 @@ Built with
 - GraphQL
 - Apache Kafka
 - Auth0
+
+TODO:
+
+- [ ] Husky
+- [ ] deploy
