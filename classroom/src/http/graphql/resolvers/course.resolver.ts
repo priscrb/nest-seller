@@ -16,14 +16,14 @@ export class CoursesResolver {
     private enrollmentsService: EnrollmentsService,
   ) {}
 
-  @UseGuards(AuthorizationGuard)
   @Query(() => [Course])
+  @UseGuards(AuthorizationGuard)
   courses() {
     return this.coursesService.listAllCourses();
   }
 
-  @UseGuards(AuthorizationGuard)
   @Query(() => Course)
+  @UseGuards(AuthorizationGuard)
   async course(@Args('id') id: string, @CurrentUser() user: AuthUser) {
     const student = await this.studentsService.getStudentByAuthUserId(user.sub);
 
@@ -31,9 +31,6 @@ export class CoursesResolver {
       throw new Error('Student not found');
     }
 
-    /**
-     * Only for the logged student and the course im searching
-     */
     const enrollment = await this.enrollmentsService.getByCourseAndStudentId({
       courseId: id,
       studentId: student.id,
@@ -46,8 +43,8 @@ export class CoursesResolver {
     return this.coursesService.getCourseById(id);
   }
 
-  @UseGuards(AuthorizationGuard)
   @Mutation(() => Course)
+  @UseGuards(AuthorizationGuard)
   createCourse(@Args('data') data: CreateCourseInput) {
     return this.coursesService.createCourse(data);
   }
